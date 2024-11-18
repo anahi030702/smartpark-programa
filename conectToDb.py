@@ -3,9 +3,9 @@ from pymongo.errors import ConnectionFailure
 
 class ConectionDb:
     def __init__(self):
-        self.client = MongoClient("mongodb://localhost:27017/", serverSelectionTimeoutMS=5000)
-        self.db = self.client["SmartPark"]
-        self.collection = self.db["Estaciones"]
+        self.client = MongoClient("mongodb+srv://admin:admin@smartpark.oxbq8.mongodb.net/", serverSelectionTimeoutMS=5000)
+        self.db = self.client["smartpark"]
+        self.collection = self.db["estaciones"]
 
     def conectar_mongo(self):
         try:
