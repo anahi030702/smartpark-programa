@@ -4,11 +4,12 @@ from arreglo import Arreglo
 
 
 class Sensor(Arreglo):
-    def __init__(self, tipo=None, valor= None, fecha = None):
+    def __init__(self, tipo=None, valor= None, fecha = None, velocidad=None):
         if tipo is not None:
             self.tipo = tipo
             self.valor = valor
             self.fecha = fecha
+            self.velocidad = velocidad
             self._is_array = False
         else:
             self._is_array = True
@@ -18,14 +19,18 @@ class Sensor(Arreglo):
         if self._is_array:
             return super().__str__()
         else:
-            return f"Sensor(tipo={self.tipo}, valor={self.valor}, fecha={self.fecha})"
+            velocidad_info = f", velocidad={self.velocidad}" if self.velocidad is not None else ""
+            return f"Sensor(tipo={self.tipo}, valor={self.valor}, fecha={self.fecha}{velocidad_info})"
 
 
     def dict(self):
         if self._is_array:
             return [arreglo.dict() for arreglo in self.arreglos]
         else:
-            return { "tipo" : self.tipo, "valor": self.valor, "fecha": self.fecha }
+            data = {"tipo": self.tipo, "valor": self.valor, "fecha": self.fecha}
+            if self.velocidad is not None:
+                data["velocidad"] = self.velocidad
+            return data
 
     def iterar_archivo(self, data):
         sensores = []

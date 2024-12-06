@@ -1,23 +1,41 @@
+import pymongo
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
 class ConectionDb:
+    #tratar el error cuando no hay conexion a mongo porque no funciona
     def __init__(self):
-        self.client = MongoClient("mongodb+srv://admin:admin@smartpark.oxbq8.mongodb.net/", serverSelectionTimeoutMS=5000)
-        self.db = self.client["smartpark"]
-        self.collection = self.db["estaciones"]
+        self.client = None
+        try:
+            self.client = MongoClient("mongodb+srv://admin:admin@smartpark.oxbq8.mongodb.net/", serverSelectionTimeoutMS=5000)
+            self.db = self.client["smartpark"]
+            self.collection = self.db["estaciones"]
+            self.isConnected = True
+        except pymongo.errors.ConnectionFailure as e:
+            self.isConnected = False
+        except pymongo.errors.ServerSelectionTimeoutError as e:
+            self.isConnected = False
+        except pymongo.errors.ConfigurationError as e:
+            self.isConnected = False
+        except Exception as e:
+            self.isConnected = False
+
 
     def conectar_mongo(self):
         try:
             self.client.admin.command('ping')
+            self.isConnected = True
             return True
         except ConnectionFailure:
+            self.isConnected = False
             return False
+        except Exception as e:
+            self.isConnected = False
 
     def read(self):
-        alumnos = self.collection.find()
-        for alumno in alumnos:
-            print(alumno)
+        datos = self.collection.find()
+        for dato in datos:
+            print(dato)
 
     def create(self, documento, cantidad):
         if cantidad == 1:
@@ -35,20 +53,23 @@ class ConectionDb:
         else:
             return "No se encontro ninguna coincidencia"
 
-    def updateone(self, filtro, nuevo_valor, array_filter = None):
+    def updateone(self, filtro, nuevo_valor):
         res = self.collection.update_one(filtro, nuevo_valor)
         if res.modified_count > 0:
-            return "Documento actualizado exitosamente."
+            return True
         else:
-            return "No se encontró ningún documento que coincidiera con el criterio o no hubo cambios."
+            return False
 
-    def findone(self, filtro, cantidad):
-        res = self.collection.find_one(filtro, cantidad)
+    def findone(self, filtro, args=None):
+        res = self.collection.find_one(filtro, args)
         if res:
-            print(res)
             return res
         else:
-            print("No se encontró ningún documento que coincida con el criterio.")
+            return False
+
+    def aggregate(self, arg1):
+        res =  self.collection.aggregate([arg1])
+        return res
 
 
     def cerrar_conexion(self):
