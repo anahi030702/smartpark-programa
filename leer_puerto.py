@@ -17,11 +17,8 @@ from conectToDb import ConectionDb
 
 class puertoSerial:
     def __init__(self):
-<<<<<<< HEAD
         self.port = 'COM6'
-=======
-        self.port = '/dev/ttyUSB0'
->>>>>>> 3e9fac1f9618aaa05cfdc6fc001a4d7e33c32b1a
+        # self.port = '/dev/ttyUSB0'
         self.baudrate = 9600
         self.timeout = 0
         self.est = Estacionamiento()
@@ -174,7 +171,7 @@ class puertoSerial:
         else:
             print("La informacion se mantendra en local hasta que se restablezca la conexion con la BD")
 
-    def tomarFotoYEnviar():
+    def tomarFotoYEnviar(self):
         # Cambia el índice de la cámara según sea necesario (1 para cámara externa)
         cap = cv2.VideoCapture(1)
 
