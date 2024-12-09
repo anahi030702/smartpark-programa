@@ -17,8 +17,8 @@ from conectToDb import ConectionDb
 
 class puertoSerial:
     def __init__(self):
-        self.port = 'COM6'
-        # self.port = '/dev/ttyUSB0'
+        self.port = 'COM4'
+        # self.port = '/dev/ttyACM0'
         self.baudrate = 9600
         self.timeout = 0
         self.est = Estacionamiento()
@@ -28,13 +28,13 @@ class puertoSerial:
 
 
     def leer_puerto(self):
-        # self.enviar_rfid_autorizados()  # Esta acción se ejecuta cada 5 minutos
-        #
+        self.enviar_rfid_autorizados()  # Esta acción se ejecuta cada 5 minutos
+
         # Espera un poco para que se establezca la conexión
-        time.sleep(3)
-        # # Variables para llevar el control de los tiempos
-        # tiempo_ultimo_rfid = time.time()
-        # tiempo_ultimo_accion = time.time()
+        time.sleep(10)
+        # Variables para llevar el control de los tiempos
+        tiempo_ultimo_rfid = time.time()
+        tiempo_ultimo_accion = time.time()
 
         try:
             while True:
@@ -52,20 +52,20 @@ class puertoSerial:
                         sensor = Sensor(parts[0], parts[1], fecha)
                     self.actualizarSensores(sensor)
 
-                #     self.enviar_dato_alarma()
-                #     self.mandarInfoLocal()
-                #     self.actualizarEstacionamiento()
-                #     # Espera 5 segundos antes de ejecutar nuevamente
-                #     tiempo_ultimo_accion = time.time()
-                #
-                # # Verifica si han pasado 5 minutos (300 segundos)
-                # if time.time() - tiempo_ultimo_rfid >= 300:
-                #     self.enviar_rfid_autorizados()  # Esta acción se ejecuta cada 5 minutos
-                #     tiempo_ultimo_rfid = time.time()
+                    self.enviar_dato_alarma()
+                    self.mandarInfoLocal()
+                    self.actualizarEstacionamiento()
+                    # Espera 5 segundos antes de ejecutar nuevamente
+                    tiempo_ultimo_accion = time.time()
+
+                # Verifica si han pasado 5 minutos (300 segundos)
+                if time.time() - tiempo_ultimo_rfid >= 300:
+                    self.enviar_rfid_autorizados()  # Esta acción se ejecuta cada 5 minutos
+                    tiempo_ultimo_rfid = time.time()
 
 
 
-                #     # Espera 30 segundos antes de leer nuevamente
+                    # Espera 30 segundos antes de leer nuevamente
                 time.sleep(5)
 
         except KeyboardInterrupt:
