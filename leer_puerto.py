@@ -50,7 +50,7 @@ class puertoSerial:
                         urlFoto = tomarFotoYEnviar()
                         sensor = Sensor(parts[0], urlFoto, fecha, parts[1])
                     else:
-                        sensor = Sensor(parts[0], parts[1], fecha)
+                        sensor = Sensor(parts[0], parts[1].strip(), fecha)
                     print(sensor)
                     self.actualizarSensores(sensor)
 
