@@ -176,7 +176,7 @@ class puertoSerial:
 
     def tomarFotoYEnviar(self):
         # Cambia el índice de la cámara según sea necesario (1 para cámara externa)
-        cap = cv2.VideoCapture(1)
+        cap = cv2.VideoCapture('/dev/video0')
 
         # Verifica si la cámara se ha abierto correctamente
         if not cap.isOpened():
