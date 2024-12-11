@@ -17,8 +17,8 @@ from conectToDb import ConectionDb
 
 class puertoSerial:
     def __init__(self):
-        self.port = 'COM4'
-        # self.port = '/dev/ttyACM0'
+        # self.port = 'COM4'
+        self.port = '/dev/ttyACM0'
         self.baudrate = 9600
         self.timeout = 0
         self.est = Estacionamiento()
