@@ -43,7 +43,6 @@ class puertoSerial:
                 if self.ser.in_waiting > 0:  # Verifica si hay datos disponibles para leer
                     line = self.ser.readline().decode('utf-8')  # Lee la línea y decodifica
                     print(line.strip())
-                    time.sleep(1)
 
                     fecha = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
                     parts = line.split(':')
@@ -61,15 +60,15 @@ class puertoSerial:
                     tiempo_ultimo_accion = time.time()
 
                 # Verifica si han pasado 5 minutos (300 segundos)
-                # if time.time() - tiempo_ultimo_rfid >= 300:
-                #     self.enviar_rfid_autorizados()  # Esta acción se ejecuta cada 5 minutos
-                #     self.mandarInfoLocal()
-                #     self.actualizarEstacionamiento()
-                #     tiempo_ultimo_rfid = time.time()
+                if time.time() - tiempo_ultimo_rfid >= 300:
+                    self.enviar_rfid_autorizados()  # Esta acción se ejecuta cada 5 minutos
+                    self.mandarInfoLocal()
+                    self.actualizarEstacionamiento()
+                    tiempo_ultimo_rfid = time.time()
 
 
                     # Espera 30 segundos antes de leer nuevamente
-                # time.sleep(5)
+                time.sleep(1)
 
         except KeyboardInterrupt:
             print("Lectura interrumpida.")
