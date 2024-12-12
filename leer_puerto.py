@@ -53,6 +53,8 @@ class puertoSerial:
                         sensor = Sensor(parts[0], parts[1].strip(), fecha)
                     print(sensor)
                     self.actualizarSensores(sensor)
+                    self.mandarInfoLocal()
+                    self.actualizarEstacionamiento()
 
                     self.enviar_dato_alarma()
 
@@ -62,8 +64,7 @@ class puertoSerial:
                 # Verifica si han pasado 5 minutos (300 segundos)
                 if time.time() - tiempo_ultimo_rfid >= 300:
                     self.enviar_rfid_autorizados()  # Esta acción se ejecuta cada 5 minutos
-                    self.mandarInfoLocal()
-                    self.actualizarEstacionamiento()
+
                     tiempo_ultimo_rfid = time.time()
 
 
@@ -175,7 +176,7 @@ class puertoSerial:
 
     def tomarFotoYEnviar(self):
         # Cambia el índice de la cámara según sea necesario (1 para cámara externa)
-        cap = cv2.VideoCapture('/dev/video0')
+        cap = cv2.VideoCapture(1)
 
         # Verifica si la cámara se ha abierto correctamente
         if not cap.isOpened():
